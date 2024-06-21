@@ -67,7 +67,7 @@ This is Solidity based smart contract defines which is used to manage the wallet
 
 1. Open remix IDE.
 2. Create a new file.
-3. Copy the code from MYwallet.sol.
+3. Copy the code from MyWallet.sol.
 4. Paste that code in your new file.
 5. Compile the code.
 6. Deploy the contract.
