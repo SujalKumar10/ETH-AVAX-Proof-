@@ -18,7 +18,7 @@ contract Library{
         _;
     }
 
-    function Add_Book(string memory Name) public {
+    function Add_Book(string memory Name) public onlyOwner{
         available[Name] = true;
         byOwner[Name] = true;
         Units[Name]++; 
