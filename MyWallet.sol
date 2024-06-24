@@ -1,36 +1,46 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-contract MyWallet{
-    mapping(address => uint) private balances;
-    mapping(address => bool) private account;
-    mapping(address => uint) private Wallet;
+contract Library{
 
-    modifier IDchecker(){
-        require(account[msg.sender] == true,"Enter Wallet ID");
+    address private Owner;
+    mapping (string => bool) private available;
+    mapping (address => string) private borrow;
+    mapping (string => uint) public Units;
+    mapping (string => bool) private byOwner;
+
+    constructor() {
+        Owner = msg.sender;
+    }
+
+    modifier onlyOwner{
+        require(msg.sender == Owner,"This function is only for the owner");
         _;
     }
 
-    function Wallet_ID(uint ID) public {
-        Wallet[msg.sender] = ID;
-        account[msg.sender] = true;
+    function Add_Book(string memory Name) public {
+        available[Name] = true;
+        byOwner[Name] = true;
+        Units[Name]++; 
     }
 
-    function deposit(uint Amount) public IDchecker(){
-        assert(balances[msg.sender] + Amount>= Amount);
-        balances[msg.sender]+= Amount;
+    function Borrow_Book(string memory Name) public payable {
+        require(available[Name],"Book is not available now");
+        Units[Name]--; 
+        borrow[msg.sender] = Name;
+        assert(Units[Name]<=0);
+        available[Name] = false;
     }
 
-    function withdraw(uint amount) public IDchecker(){
-        require(amount <= balances[msg.sender], "Insufficient Balance");
-        balances[msg.sender] -= amount;    
-    }
+    function Return_Book(string memory Name) public {
+        string memory borrowedBook = borrow[msg.sender];
+        require(bytes(borrowedBook).length != 0, "You have not borrowed any book");
 
-    function CheckBalance(uint ID) public view returns(uint){
-        if(ID != Wallet[msg.sender]){
-            revert("Incorrct ID");
+        if(!byOwner[Name]){
+            revert("This book is not from this liberary");
         }
-        return balances[msg.sender];
-
+        Units[Name]++;
     }
+
+
 }
