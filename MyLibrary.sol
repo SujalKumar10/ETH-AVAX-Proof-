@@ -40,6 +40,7 @@ contract Library{
             revert("This book is not from this liberary");
         }
         Units[Name]++;
+        available[Name] = true;
     }
 
 
