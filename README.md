@@ -1,4 +1,4 @@
-# Wallet Management Contract
+# Library management Contract
 ## Description
 
 This is Solidity based smart contract defines which is used to manage the library by doing functions like adding, borrowing, returning and counting the books. The contract includes error handeling using solidity's **require()**, **assert()**, **revert()** statements. 
